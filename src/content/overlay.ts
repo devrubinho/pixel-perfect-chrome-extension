@@ -377,8 +377,7 @@ export class OverlayManager {
         </div>
       `;
     } else if (isSVG) {
-      // For SVG, show detailed info
-      const svgElement = element as SVGSVGElement;
+      const svgElement = element as unknown as SVGSVGElement;
 
       // Get viewBox
       let viewBox = 'N/A';

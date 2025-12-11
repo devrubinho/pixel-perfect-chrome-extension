@@ -135,7 +135,7 @@ class PopupController {
 
   async loadPreferences() {
     const result = await chrome.storage.local.get(['preferences']);
-    const preferences = result.preferences || {
+    const preferences = (result.preferences as { overlayColor?: string; tooltipFontSize?: number }) || {
       overlayColor: 'purple',
       tooltipFontSize: 12
     };

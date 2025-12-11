@@ -4,7 +4,7 @@ import { PanelRenderer } from '../panel/panel';
 import { InspectedElement } from '../shared/types';
 import { ClipboardManager } from '../shared/clipboard';
 import { DataExporter } from '../shared/exporters';
-import { getCurrentTheme, getOverlayColor } from '../shared/constants';
+import { getCurrentTheme, getOverlayColor, SECONDARY_COLOR, TERTIARY_COLOR } from '../shared/constants';
 
 // ============================================================
 // PIXEL PERFECT INSPECTOR
@@ -58,7 +58,8 @@ class PixelPerfectInspector {
           return true;
         } catch (error) {
           console.error('[Content Script] Error handling message:', error);
-          sendResponse({ success: false, error: error.message });
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+          sendResponse({ success: false, error: errorMessage });
           return true;
         }
       });
@@ -647,10 +648,11 @@ class PixelPerfectInspector {
 
   private loadPreferences() {
     chrome.storage.local.get(['preferences'], (result) => {
-      if (result.preferences) {
+      if (result.preferences && typeof result.preferences === 'object') {
+        const prefs = result.preferences as { overlayColor?: string; tooltipFontSize?: number };
         this.preferences = {
-          overlayColor: result.preferences.overlayColor || 'purple',
-          tooltipFontSize: result.preferences.tooltipFontSize || 12
+          overlayColor: prefs.overlayColor || 'purple',
+          tooltipFontSize: prefs.tooltipFontSize || 12
         };
         this.applyPreferences();
       }
