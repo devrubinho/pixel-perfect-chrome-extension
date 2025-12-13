@@ -29,6 +29,19 @@ async function build() {
     sourcemap: false,
   });
   console.log('✅ inspector.js bundlado');
+
+  // Build popup script
+  await esbuild.build({
+    entryPoints: ['src/popup/popup.ts'],
+    bundle: true,
+    outfile: 'dist/popup.js',
+    format: 'iife',
+    platform: 'browser',
+    target: 'es2020',
+    minify: false,
+    sourcemap: false,
+  });
+  console.log('✅ popup.js bundlado');
 }
 
 build().catch(err => {

@@ -14,6 +14,7 @@ export class OverlayManager {
   private fontSize: number = 12;
   private isDarkMode: boolean = false;
   private darkModeMediaQuery: MediaQueryList | null = null;
+  private currentElement: HTMLElement | null = null;
 
   constructor() {
     this.detectDarkMode();
@@ -47,6 +48,10 @@ export class OverlayManager {
   updateColorSelection(colorName: string) {
     this.selectedColorName = colorName;
     this.updateColorTheme();
+    // Re-render tooltip if overlay is active and showing an element
+    if (this.isActive && this.currentElement) {
+      this.showOnElement(this.currentElement);
+    }
   }
 
   private updateColorTheme() {
@@ -266,6 +271,9 @@ export class OverlayManager {
 
   showOnElement(element: HTMLElement) {
     if (!this.isActive || !this.overlayElement || !this.tooltipElement) return;
+
+    // Store current element for re-rendering when color changes
+    this.currentElement = element;
 
     const rect = element.getBoundingClientRect();
     const scrollX = window.scrollX;
@@ -520,6 +528,7 @@ export class OverlayManager {
   // ============================================================
 
   hide() {
+    this.currentElement = null;
     if (this.overlayElement) this.overlayElement.style.display = 'none';
     if (this.paddingElement) this.paddingElement.style.display = 'none';
     if (this.tooltipElement) this.tooltipElement.style.display = 'none';

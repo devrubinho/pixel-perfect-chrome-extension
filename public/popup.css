@@ -130,6 +130,86 @@ input:checked + .slider:before {
   color: #1e1b2e;
 }
 
+.preference-label-vertical {
+  margin-bottom: 8px;
+}
+
+.preference-label-vertical span {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: #1e1b2e;
+  margin-bottom: 2px;
+}
+
+.preference-hint {
+  display: block;
+  font-size: 10px;
+  color: #9ca3af;
+  margin-top: 2px;
+}
+
+.color-picker {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  padding: 4px 0;
+}
+
+.color-option {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.color-option:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.color-option.selected:hover {
+  transform: scale(1);
+}
+
+.color-option.selected {
+  border: 2px solid rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9), 0 0 0 4px rgba(0, 0, 0, 0.1) !important;
+  transform: scale(1);
+}
+
+.color-option.selected::after {
+  content: '✓';
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 14px;
+  height: 14px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  color: #1e1b2e;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: center;
+}
+
+/* Apply background colors to each option */
+.color-option[data-color="purple"] { background-color: #7C3AED; }
+.color-option[data-color="blue"] { background-color: #2563EB; }
+.color-option[data-color="cyan"] { background-color: #0891B2; }
+.color-option[data-color="teal"] { background-color: #0D9488; }
+.color-option[data-color="green"] { background-color: #16A34A; }
+.color-option[data-color="orange"] { background-color: #EA580C; }
+.color-option[data-color="red"] { background-color: #DC2626; }
+.color-option[data-color="pink"] { background-color: #DB2777; }
+.color-option[data-color="indigo"] { background-color: #4F46E5; }
+.color-option[data-color="amber"] { background-color: #D97706; }
+
 .preference-select {
   padding: 4px 8px;
   border: 1px solid rgba(139, 92, 246, 0.2);

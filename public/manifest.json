@@ -32,8 +32,8 @@
   "commands": {
     "toggle-inspection": {
       "suggested_key": {
-        "default": "Ctrl+Shift+P",
-        "mac": "Command+Shift+P"
+        "default": "Ctrl+Shift+Period",
+        "mac": "Command+Shift+Period"
       },
       "description": "Toggle inspection mode"
     }

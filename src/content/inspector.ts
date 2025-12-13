@@ -436,24 +436,22 @@ class PixelPerfectInspector {
       label.style.cssText = `
         position: absolute;
         left: ${point1.x}px;
-        top: ${point1.y - 30}px;
+        top: ${point1.y - 50}px;
         transform: translateX(-50%);
         background: ${TERTIARY_COLOR};
         color: white;
-        padding: 6px 12px;
-        border-radius: 4px;
-        font-family: monospace;
-        font-size: 12px;
+        padding: 16px 24px;
+        border-radius: 8px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-size: 32px;
+        font-weight: 700;
         z-index: 2147483647;
         pointer-events: none;
         white-space: nowrap;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+        letter-spacing: -0.5px;
       `;
-      label.innerHTML = `
-        <div><strong>H:</strong> ${Math.round(horizontal)}px</div>
-        <div><strong>V:</strong> ${Math.round(vertical)}px</div>
-        <div><strong>D:</strong> ${Math.round(diagonal)}px</div>
-      `;
+      label.textContent = `${Math.round(diagonal)}px`;
       document.body.appendChild(label);
       return;
     }
@@ -483,30 +481,28 @@ class PixelPerfectInspector {
     `;
     document.body.appendChild(line);
 
-    // Create label
+    // Create label - show only the distance value, larger and cleaner
     const label = document.createElement('div');
     label.id = 'pixel-perfect-measure-label';
     label.style.cssText = `
       position: absolute;
       left: ${centerX}px;
-      top: ${centerY - 30}px;
+      top: ${centerY - 50}px;
       transform: translateX(-50%);
       background: ${TERTIARY_COLOR};
       color: white;
-      padding: 6px 12px;
-      border-radius: 4px;
-      font-family: monospace;
-      font-size: 12px;
+      padding: 16px 24px;
+      border-radius: 8px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 32px;
+      font-weight: 700;
       z-index: 2147483647;
       pointer-events: none;
       white-space: nowrap;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+      letter-spacing: -0.5px;
     `;
-    label.innerHTML = `
-      <div><strong>H:</strong> ${Math.round(horizontal)}px</div>
-      <div><strong>V:</strong> ${Math.round(vertical)}px</div>
-      <div><strong>D:</strong> ${Math.round(diagonal)}px</div>
-    `;
+    label.textContent = `${Math.round(diagonal)}px`;
     document.body.appendChild(label);
   }
 
@@ -560,7 +556,7 @@ class PixelPerfectInspector {
     `;
     document.body.appendChild(vLine);
 
-    // Create label at intersection or center
+    // Create label at intersection or center - show only the distance value
     const labelX = (hStart.x + hEnd.x + vStart.x + vEnd.x) / 4;
     const labelY = (hStart.y + hEnd.y + vStart.y + vEnd.y) / 4;
     const label = document.createElement('div');
@@ -568,24 +564,22 @@ class PixelPerfectInspector {
     label.style.cssText = `
       position: absolute;
       left: ${labelX}px;
-      top: ${labelY - 30}px;
+      top: ${labelY - 50}px;
       transform: translateX(-50%);
       background: ${TERTIARY_COLOR};
       color: white;
-      padding: 6px 12px;
-      border-radius: 4px;
-      font-family: monospace;
-      font-size: 12px;
+      padding: 16px 24px;
+      border-radius: 8px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 32px;
+      font-weight: 700;
       z-index: 2147483647;
       pointer-events: none;
       white-space: nowrap;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+      letter-spacing: -0.5px;
     `;
-    label.innerHTML = `
-      <div><strong>H:</strong> ${Math.round(horizontal)}px</div>
-      <div><strong>V:</strong> ${Math.round(vertical)}px</div>
-      <div><strong>D:</strong> ${Math.round(diagonal)}px</div>
-    `;
+    label.textContent = `${Math.round(diagonal)}px`;
     document.body.appendChild(label);
   }
 

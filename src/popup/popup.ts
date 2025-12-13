@@ -23,6 +23,12 @@ class PopupController {
     this.fontSizeValue = document.getElementById('font-size-value') as HTMLElement;
     this.fontSizeDecrease = document.getElementById('font-size-decrease') as HTMLButtonElement;
     this.fontSizeIncrease = document.getElementById('font-size-increase') as HTMLButtonElement;
+
+    if (!this.inspectionToggle || !this.statusText || !this.colorOptions.length) {
+      console.error('Required elements not found in popup HTML');
+      return;
+    }
+
     this.init();
   }
 
@@ -62,7 +68,11 @@ class PopupController {
     document.getElementById('clear-history')?.addEventListener('click', () => this.clearHistory());
 
     this.colorOptions.forEach(option => {
-      option.addEventListener('click', () => this.handleColorChange(option));
+      option.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.handleColorChange(option);
+      });
     });
 
     this.fontSizeDecrease.addEventListener('click', () => this.handleFontSizeChange(-1));
@@ -156,11 +166,17 @@ class PopupController {
     const colorName = selectedOption.getAttribute('data-color');
     if (!colorName) return;
 
-    this.colorOptions.forEach(option => option.classList.remove('selected'));
+    // Remove selected class from all options
+    this.colorOptions.forEach(option => {
+      option.classList.remove('selected');
+    });
+
+    // Add selected class to the clicked option
     selectedOption.classList.add('selected');
 
     this.currentColor = colorName;
 
+    // Save preferences and update immediately
     this.savePreferences({
       overlayColor: colorName,
       tooltipFontSize: this.currentFontSize
@@ -180,16 +196,24 @@ class PopupController {
     await chrome.storage.local.set({ preferences });
     console.log('Preferences saved:', preferences);
 
-    const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-    if (tabs[0]?.id) {
-      try {
-        await chrome.tabs.sendMessage(
-          tabs[0].id,
-          { action: 'updatePreferences', preferences }
-        );
-      } catch (error) {
-        console.log('Content script not available, preferences will apply on next activation');
-      }
+    // Send message to all tabs to update preferences
+    try {
+      const tabs = await chrome.tabs.query({});
+      const promises = tabs.map(tab => {
+        if (tab.id) {
+          return chrome.tabs.sendMessage(
+            tab.id,
+            { action: 'updatePreferences', preferences }
+          ).catch(() => {
+            // Ignore errors for tabs without content script
+            return null;
+          });
+        }
+        return Promise.resolve(null);
+      });
+      await Promise.allSettled(promises);
+    } catch (error) {
+      console.log('Error sending preferences to tabs:', error);
     }
   }
 
@@ -198,6 +222,8 @@ class PopupController {
   // ============================================================
 
   async loadHistory() {
+    if (!this.historyList) return;
+
     chrome.storage.local.get(['history'], (result) => {
       const history = (result.history as any[]) || [];
 

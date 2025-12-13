@@ -54,11 +54,7 @@ if (fs.existsSync('public/popup.html')) {
   console.log('✅ popup.html copiado');
 }
 
-// Copiar popup JS
-if (fs.existsSync('public/popup.js')) {
-  fs.copyFileSync('public/popup.js', 'dist/popup.js');
-  console.log('✅ popup.js copiado');
-}
+// Popup JS é compilado pelo build-bundle.js, não precisa copiar
 
 // Copiar panel CSS
 if (fs.existsSync('src/panel/panel.css')) {
