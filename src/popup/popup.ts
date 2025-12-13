@@ -116,16 +116,32 @@ class PopupController {
     const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
 
     if (tabs[0]?.id) {
-      chrome.tabs.sendMessage(
-        tabs[0].id,
-        { action: 'toggleInspection', enabled },
-        (response) => {
-          if (chrome.runtime.lastError) {
-            console.log('Content script not available');
+      try {
+        // Try to send message first (script might already be injected)
+        chrome.tabs.sendMessage(
+          tabs[0].id,
+          { action: 'toggleInspection', enabled },
+          async (response) => {
+            if (chrome.runtime.lastError) {
+              // Script not injected yet, inject it via service worker
+              await chrome.runtime.sendMessage({
+                action: 'toggleInspectionFromPopup',
+                enabled,
+                tabId: tabs[0].id
+              });
+            }
+            this.updateStatus(enabled);
           }
-        }
-      );
-      this.updateStatus(enabled);
+        );
+      } catch (error) {
+        // Fallback: inject via service worker
+        await chrome.runtime.sendMessage({
+          action: 'toggleInspectionFromPopup',
+          enabled,
+          tabId: tabs[0]?.id
+        });
+        this.updateStatus(enabled);
+      }
     }
   }
 

@@ -10,6 +10,7 @@
     "build:bundle": "node scripts/build-bundle.js",
     "build:copy": "node scripts/copy-assets.js",
     "build:test": "npm run build && echo '✅ Build completo! Carregue a pasta dist/ no Chrome'",
+    "package": "npm run build && node scripts/package-extension.js",
     "watch": "vite build --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -19,7 +20,7 @@
     "inspector",
     "pixel-perfect"
   ],
-  "author": "",
+  "author": "Rubens Junior <rubensojunior6@gmail.com>",
   "license": "MIT",
   "devDependencies": {
     "@types/chrome": "^0.1.32",

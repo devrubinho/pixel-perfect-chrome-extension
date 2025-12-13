@@ -43,17 +43,28 @@ async function sendToggleMessage(tabId: number, enabled: boolean) {
     });
     return { success: true, response };
   } catch (error) {
+    // Content script not injected yet, inject it now
     return await injectAndRetry(tabId, enabled);
   }
 }
 
 async function injectAndRetry(tabId: number, enabled: boolean) {
   try {
+    // Inject CSS first
+    await chrome.scripting.insertCSS({
+      target: { tabId },
+      files: ['content/overlay.css'],
+    });
+
+    // Then inject JavaScript
     await chrome.scripting.executeScript({
       target: { tabId },
       files: ['content/inspector.js'],
     });
-    await new Promise(resolve => setTimeout(resolve, 200));
+
+    // Wait for script to initialize
+    await new Promise(resolve => setTimeout(resolve, 300));
+
     const response = await chrome.tabs.sendMessage(tabId, {
       action: 'toggleInspection',
       enabled,
@@ -102,10 +113,11 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
       inspectionMode = message.enabled;
       activeTabId = tabId;
 
-      await sendToggleMessage(tabId, inspectionMode);
+      // Always inject if needed (handles first-time activation)
+      const result = await sendToggleMessage(tabId, inspectionMode);
       await updateIcon(tabId, inspectionMode);
 
-      sendResponse({ success: true });
+      sendResponse({ success: result.success, error: result.error });
       break;
 
     case 'saveInspectedElement':
