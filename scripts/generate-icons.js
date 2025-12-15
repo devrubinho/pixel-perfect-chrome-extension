@@ -5,13 +5,13 @@ const path = require('path');
 const iconsDir = path.resolve(__dirname, '../public/icons');
 const sizes = [16, 48, 128];
 
-// Cores do app: roxo (primário) e rosa (secundário)
-const primaryColor = '#8B5CF6'; // Roxo
-const secondaryColor = '#EC4899'; // Rosa
+// App colors: purple (primary) and pink (secondary)
+const primaryColor = '#8B5CF6'; // Purple
+const secondaryColor = '#EC4899'; // Pink
 const backgroundColor = '#FFFFFF';
 
 async function generateIcon(size) {
-  // Criar um ícone com gradiente roxo→rosa: um quadrado com bordas e um "P" no centro
+  // Create an icon with purple→pink gradient: a square with borders and a "P" in the center
   const svg = `
     <svg width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -39,7 +39,7 @@ async function generateIcon(size) {
 }
 
 async function generateActiveIcon(size) {
-  // Ícone ativo: fundo com gradiente roxo→rosa e "P" branco
+  // Active icon: background with purple→pink gradient and white "P"
   const svg = `
     <svg width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -65,24 +65,24 @@ async function generateActiveIcon(size) {
 }
 
 async function generateIcons() {
-  console.log('🎨 Gerando ícones...');
+  console.log('🎨 Generating icons...');
 
   await fs.ensureDir(iconsDir);
 
-  // Gerar ícones normais
+  // Generate normal icons
   for (const size of sizes) {
     await generateIcon(size);
   }
 
-  // Gerar ícones ativos
+  // Generate active icons
   for (const size of sizes) {
     await generateActiveIcon(size);
   }
 
-  console.log('✅ Todos os ícones foram gerados!');
+  console.log('✅ All icons generated!');
 }
 
 generateIcons().catch(err => {
-  console.error('❌ Erro ao gerar ícones:', err);
+  console.error('❌ Error generating icons:', err);
   process.exit(1);
 });

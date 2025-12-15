@@ -1,9 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 
-console.log('📋 Copiando assets para dist/...');
+console.log('📋 Copying assets to dist/...');
 
-// Criar diretórios necessários
+// Create necessary directories
 const dirs = ['dist/icons', 'dist/content', 'dist/background', 'dist/popup', 'dist/panel'];
 dirs.forEach(dir => {
   if (!fs.existsSync(dir)) {
@@ -11,15 +11,15 @@ dirs.forEach(dir => {
   }
 });
 
-// Copiar manifest
+// Copy manifest
 if (fs.existsSync('public/manifest.json')) {
   fs.copyFileSync('public/manifest.json', 'dist/manifest.json');
-  console.log('✅ manifest.json copiado');
+  console.log('✅ manifest.json copied');
 } else {
-  console.error('❌ public/manifest.json não encontrado');
+  console.error('❌ public/manifest.json not found');
 }
 
-// Copiar ícones
+// Copy icons
 if (fs.existsSync('public/icons')) {
   const icons = fs.readdirSync('public/icons');
   icons.forEach(icon => {
@@ -27,52 +27,52 @@ if (fs.existsSync('public/icons')) {
     const dest = path.join('dist/icons', icon);
     fs.copyFileSync(src, dest);
   });
-  console.log(`✅ ${icons.length} ícone(s) copiado(s)`);
+  console.log(`✅ ${icons.length} icon(s) copied`);
 } else {
-  console.warn('⚠️  Pasta public/icons não encontrada (criando placeholders)');
-  // Criar placeholders vazios
+  console.warn('⚠️  public/icons folder not found (creating placeholders)');
+  // Create empty placeholders
   ['icon16.png', 'icon48.png', 'icon128.png'].forEach(icon => {
     fs.writeFileSync(path.join('dist/icons', icon), '');
   });
 }
 
-// Copiar CSS
+// Copy CSS
 if (fs.existsSync('src/content/overlay.css')) {
   fs.copyFileSync('src/content/overlay.css', 'dist/content/overlay.css');
-  console.log('✅ overlay.css copiado');
+  console.log('✅ overlay.css copied');
 }
 
-// Copiar popup CSS
+// Copy popup CSS
 if (fs.existsSync('public/popup.css')) {
   fs.copyFileSync('public/popup.css', 'dist/popup.css');
-  console.log('✅ popup.css copiado');
+  console.log('✅ popup.css copied');
 }
 
-// Copiar popup HTML
+// Copy popup HTML
 if (fs.existsSync('public/popup.html')) {
   fs.copyFileSync('public/popup.html', 'dist/popup.html');
-  console.log('✅ popup.html copiado');
+  console.log('✅ popup.html copied');
 }
 
-// Popup JS é compilado pelo build-bundle.js, não precisa copiar
+// Popup JS is compiled by build-bundle.js, no need to copy
 
-// Copiar panel CSS
+// Copy panel CSS
 if (fs.existsSync('src/panel/panel.css')) {
   fs.copyFileSync('src/panel/panel.css', 'dist/panel/panel.css');
-  console.log('✅ panel.css copiado');
+  console.log('✅ panel.css copied');
 }
 
-// Remover export {} do service worker (Chrome não suporta módulos ES6 em service workers)
+// Remove export {} from service worker (Chrome doesn't support ES6 modules in service workers)
 const serviceWorkerPath = 'dist/background/service-worker.js';
 if (fs.existsSync(serviceWorkerPath)) {
   let content = fs.readFileSync(serviceWorkerPath, 'utf8');
-  // Remove export {} no final do arquivo
+  // Remove export {} at the end of the file
   content = content.replace(/\n\s*export\s*\{\s*\};?\s*$/, '');
   fs.writeFileSync(serviceWorkerPath, content, 'utf8');
-  console.log('✅ service-worker.js: export {} removido');
+  console.log('✅ service-worker.js: export {} removed');
 }
 
-// Verificar arquivos compilados (extractor.js e overlay.js estão bundlados dentro de inspector.js)
+// Check compiled files (extractor.js and overlay.js are bundled inside inspector.js)
 const requiredFiles = [
   'dist/background/service-worker.js',
   'dist/content/inspector.js'
@@ -81,21 +81,21 @@ const requiredFiles = [
 let allPresent = true;
 requiredFiles.forEach(file => {
   if (fs.existsSync(file)) {
-    console.log(`✅ ${file} existe`);
+    console.log(`✅ ${file} exists`);
   } else {
-    console.error(`❌ ${file} NÃO encontrado`);
+    console.error(`❌ ${file} NOT found`);
     allPresent = false;
   }
 });
 
 if (allPresent) {
-  console.log('\n✅ Build completo!');
-  console.log('📝 Próximos passos:');
-  console.log('1. Abra Chrome e vá para chrome://extensions/');
-  console.log('2. Ative o "Modo do desenvolvedor"');
-  console.log('3. Clique em "Carregar sem compactação"');
-  console.log('4. Selecione a pasta dist/ deste projeto');
+  console.log('\n✅ Build complete!');
+  console.log('📝 Next steps:');
+  console.log('1. Open Chrome and go to chrome://extensions/');
+  console.log('2. Enable "Developer mode"');
+  console.log('3. Click "Load unpacked"');
+  console.log('4. Select the dist/ folder from this project');
 } else {
-  console.error('\n❌ Build incompleto! Execute "npx tsc" primeiro.');
+  console.error('\n❌ Incomplete build! Run "npx tsc" first.');
   process.exit(1);
 }

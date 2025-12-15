@@ -1,46 +1,46 @@
 #!/bin/bash
 
-# Script para preparar a extensão para teste no Chrome
+# Script to prepare extension for testing in Chrome
 
-echo "🔨 Preparando extensão para teste..."
+echo "🔨 Preparing extension for testing..."
 
-# Compilar TypeScript
-echo "📦 Compilando TypeScript..."
+# Compile TypeScript
+echo "📦 Compiling TypeScript..."
 npx tsc
 
-# Criar estrutura de diretórios
+# Create directory structure
 mkdir -p dist/icons
 mkdir -p dist/content
 mkdir -p dist/background
 
-# Copiar manifest e assets
-echo "📋 Copiando manifest e assets..."
+# Copy manifest and assets
+echo "📋 Copying manifest and assets..."
 cp public/manifest.json dist/manifest.json
-cp -r public/icons/* dist/icons/ 2>/dev/null || echo "⚠️  Ícones não encontrados (usando placeholders)"
+cp -r public/icons/* dist/icons/ 2>/dev/null || echo "⚠️  Icons not found (using placeholders)"
 
-# Copiar CSS
-cp src/content/overlay.css dist/content/overlay.css 2>/dev/null || echo "⚠️  overlay.css não encontrado"
+# Copy CSS
+cp src/content/overlay.css dist/content/overlay.css 2>/dev/null || echo "⚠️  overlay.css not found"
 
-# Verificar se os arquivos JS foram compilados
+# Check if JS files were compiled
 if [ ! -f "dist/background/service-worker.js" ]; then
-    echo "❌ Erro: service-worker.js não foi compilado"
+    echo "❌ Error: service-worker.js was not compiled"
     exit 1
 fi
 
 if [ ! -f "dist/content/inspector.js" ]; then
-    echo "❌ Erro: inspector.js não foi compilado"
+    echo "❌ Error: inspector.js was not compiled"
     exit 1
 fi
 
-echo "✅ Extensão preparada em dist/"
+echo "✅ Extension prepared in dist/"
 echo ""
-echo "📝 Próximos passos:"
-echo "1. Abra Chrome e vá para chrome://extensions/"
-echo "2. Ative o 'Modo do desenvolvedor'"
-echo "3. Clique em 'Carregar sem compactação'"
-echo "4. Selecione a pasta 'dist' deste projeto"
+echo "📝 Next steps:"
+echo "1. Open Chrome and go to chrome://extensions/"
+echo "2. Enable 'Developer mode'"
+echo "3. Click 'Load unpacked'"
+echo "4. Select the 'dist' folder from this project"
 echo ""
-echo "🎯 Para testar:"
-echo "- Clique no ícone da extensão para ativar modo de inspeção"
-echo "- Passe o mouse sobre elementos para ver o overlay"
-echo "- Clique em um elemento para ver as propriedades CSS"
+echo "🎯 To test:"
+echo "- Click the extension icon to activate inspection mode"
+echo "- Hover over elements to see the overlay"
+echo "- Click an element to see CSS properties"
