@@ -58,7 +58,7 @@ A Chrome extension for inspecting and extracting CSS properties from DOM element
 
 #### From Chrome Web Store (Recommended)
 
-1. Visit the [Chrome Web Store listing](#) (coming soon)
+1. Visit the [Chrome Web Store listing](https://chromewebstore.google.com/detail/pixel-perfect-inspector/knoolbdfpeelnchildnodakohkifcbgg)
 2. Click "Add to Chrome"
 3. Confirm installation
 
@@ -309,7 +309,7 @@ Uma extensão do Chrome para inspecionar e extrair propriedades CSS de elementos
 
 #### Da Chrome Web Store (Recomendado)
 
-1. Visite a [listagem na Chrome Web Store](#) (em breve)
+1. Visite a [listagem na Chrome Web Store](https://chromewebstore.google.com/detail/pixel-perfect-inspector/knoolbdfpeelnchildnodakohkifcbgg)
 2. Clique em "Usar no Chrome"
 3. Confirme a instalação
 
